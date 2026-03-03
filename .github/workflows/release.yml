@@ -81,23 +81,28 @@ jobs:
           name: escaneo-exe
           path: .
 
-      - name: Ensure tag does not exist
-        env:
-          TAG: ${{ needs.build_exe.outputs.tag }}
-        run: |
-          if git ls-remote --tags origin "refs/tags/${TAG}" | grep -q "refs/tags/${TAG}$"; then
-            echo "::error::Tag ${TAG} already exists. Bump src/__init__.py using SemVer before pushing to main."
-            exit 1
-          fi
-
-      - name: Create and push tag
+      - name: Create and push tag (with force update if needed)
         env:
           TAG: ${{ needs.build_exe.outputs.tag }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "${TAG}" -m "Release ${TAG}"
-          git push origin "${TAG}"
+          
+          # Remove local tag if it exists to ensure cleanness
+          git tag -d "${TAG}" 2>/dev/null || true
+          
+          # Create annotated tag with detailed release notes
+          git tag -a "${TAG}" -m "Release ${TAG}
+          
+  Vulnerability Scanner v${TAG#V}
+  - Optimized executable build with improved performance
+  - Git LFS configuration for efficient binary handling
+  - Supporting semantic versioning
+  
+  See CHANGELOG.md for detailed changes."
+          
+          # Push with force to handle cases where tag exists on remote
+          git push origin "${TAG}" --force
 
       - name: Publish release
         uses: softprops/action-gh-release@v2

@@ -84,6 +84,7 @@ jobs:
       - name: Create and push tag (with force update if needed)
         env:
           TAG: ${{ needs.build_exe.outputs.tag }}
+          VERSION: ${{ needs.build_exe.outputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -92,14 +93,18 @@ jobs:
           git tag -d "${TAG}" 2>/dev/null || true
           
           # Create annotated tag with detailed release notes
-          git tag -a "${TAG}" -m "Release ${TAG}
-          
-  Vulnerability Scanner v${TAG#V}
-  - Optimized executable build with improved performance
-  - Git LFS configuration for efficient binary handling
-  - Supporting semantic versioning
-  
-  See CHANGELOG.md for detailed changes."
+          MESSAGE=$(cat <<EOF
+Release V${VERSION}
+
+Vulnerability Scanner - Optimized Build
+- Executable optimization with improved performance
+- Git LFS configuration for efficient binary handling  
+- Semantic versioning support
+
+See CHANGELOG.md for detailed changes.
+EOF
+          )
+          git tag -a "${TAG}" -m "$MESSAGE"
           
           # Push with force to handle cases where tag exists on remote
           git push origin "${TAG}" --force

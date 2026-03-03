@@ -1,9 +1,9 @@
-name: Release on Main Push
+name: Release on Tag
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'V*.*.*'
 
 permissions:
   contents: write
@@ -81,28 +81,11 @@ jobs:
           name: escaneo-exe
           path: .
 
-      - name: Create and push tag (with force update if needed)
-        env:
-          TAG: ${{ needs.build_exe.outputs.tag }}
-          VERSION: ${{ needs.build_exe.outputs.version }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Remove local tag if it exists to ensure cleanness
-          git tag -d "${TAG}" 2>/dev/null || true
-          
-          # Create annotated tag with release notes
-          git tag -a "${TAG}" -m "Release V${VERSION} - Vulnerability Scanner Optimized Build"
-          
-          # Push with force to handle cases where tag exists on remote
-          git push origin "${TAG}" --force
-
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.build_exe.outputs.tag }}
-          name: Release ${{ needs.build_exe.outputs.tag }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           generate_release_notes: true
           files: |
             escaneo.exe

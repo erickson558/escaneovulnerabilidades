@@ -14,7 +14,7 @@ import json
 try:
     from src import __version__ as APP_VERSION
 except Exception:
-    APP_VERSION = "2.0.3"
+    APP_VERSION = "2.0.4"
 
 try:
     from reportlab.lib.pagesizes import letter

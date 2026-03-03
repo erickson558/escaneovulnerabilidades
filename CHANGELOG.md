@@ -4,6 +4,15 @@ Todos los cambios relevantes se documentan aqui.
 
 El formato sigue Keep a Changelog y Semantic Versioning.
 
+## [2.0.4] - 2026-03-03
+
+### Changed
+- Incremento de version patch a `2.0.4` para el siguiente release en `main`.
+- Sincronizacion de version en script legacy y README.
+
+### Build
+- Recompilacion de `escaneo.exe` en la raiz del proyecto usando `escaneo.ico`.
+
 ## [2.0.3] - 2026-03-03
 
 ### Changed

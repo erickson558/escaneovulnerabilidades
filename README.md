@@ -101,7 +101,7 @@ El proyecto usa Semantic Versioning (`MAJOR.MINOR.PATCH`) y tags de release en f
 
 Fuente unica de version:
 
-- `src/__init__.py` -> `__version__ = "2.0.3"`
+- `src/__init__.py` -> `__version__ = "2.0.4"`
 
 Regla de incremento:
 

@@ -92,19 +92,8 @@ jobs:
           # Remove local tag if it exists to ensure cleanness
           git tag -d "${TAG}" 2>/dev/null || true
           
-          # Create annotated tag with detailed release notes
-          MESSAGE=$(cat <<EOF
-Release V${VERSION}
-
-Vulnerability Scanner - Optimized Build
-- Executable optimization with improved performance
-- Git LFS configuration for efficient binary handling  
-- Semantic versioning support
-
-See CHANGELOG.md for detailed changes.
-EOF
-          )
-          git tag -a "${TAG}" -m "$MESSAGE"
+          # Create annotated tag with release notes
+          git tag -a "${TAG}" -m "Release V${VERSION} - Vulnerability Scanner Optimized Build"
           
           # Push with force to handle cases where tag exists on remote
           git push origin "${TAG}" --force

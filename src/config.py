@@ -16,12 +16,13 @@ class ConfigManager:
         "NVD_API_KEY": "",
         "window": {
             "width": 800,
-            "height": 700
+            "height": 780      # altura extra para la fila de idioma/donación
         },
         "auto_start": False,
         "auto_close_enabled": False,
         "auto_close_seconds": 60,
-        "pdf_folder": ""
+        "pdf_folder": "",
+        "language": "es"       # código de idioma activo: 'es' o 'en'
     }
 
     def __init__(self, config_file: str = "config.json"):

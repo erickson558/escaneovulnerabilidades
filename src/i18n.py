@@ -1,0 +1,131 @@
+"""Módulo de internacionalización (i18n) para Vulnerability Scanner.
+
+Centraliza todas las cadenas de texto en español (es) e inglés (en)
+para que la GUI y los reportes PDF puedan cambiar de idioma en tiempo
+de ejecución sin modificar la lógica del programa.
+"""
+
+from typing import Any
+
+# ── Enlace de donación ────────────────────────────────────────────────────────
+# URL de PayPal para el botón "Cómprame una Cerveza / Buy me a Beer"
+DONATE_URL = "https://www.paypal.com/donate/?hosted_button_id=ZABFRXC2P3JQN"
+
+# ── Diccionario de traducciones ───────────────────────────────────────────────
+# Cada clave de idioma mapea a un dict de claves de texto → cadena traducida.
+# Las cadenas con {} aceptan argumentos posicionales vía str.format().
+TRANSLATIONS: dict = {
+    # ── Español ──────────────────────────────────────────────────────────────
+    'es': {
+        # Título y botones principales
+        'app_title':          'Escáner de Vulnerabilidades - v{}',
+        'btn_scan':           'Iniciar Escaneo',
+        'btn_pdf':            'Exportar PDF',
+        'btn_save':           'Guardar Config.',
+        'btn_exit':           'Salir',
+        'btn_donate':         '🍺 Cómprame una Cerveza',
+        # Checkboxes y spinbox
+        'chk_autostart':      'Auto-Iniciar',
+        'chk_autoclose':      'Auto-Cerrar',
+        'lbl_seconds':        'seg.',
+        # Carpeta PDF
+        'lbl_pdf_folder':     'Carpeta PDF:',
+        'btn_select':         'Seleccionar...',
+        # Idioma y versión
+        'lbl_version':        'Versión: {}',
+        'lbl_lang':           'Idioma:',
+        # Mensajes de estado en la barra inferior
+        'status_ready':       'Listo',
+        'status_scan_start':  'Iniciando escaneo en SO: {}',
+        'status_packages':    '{} paquetes detectados.',
+        'status_scan_done':   'Escaneo completado. {} problemas encontrados.',
+        'status_pdf_saved':   'PDF guardado: {}',
+        'status_pdf_error':   'Error al guardar PDF: {}',
+        'status_config_saved':'Configuración guardada.',
+        'status_pdf_folder':  'Carpeta PDF: {}',
+        'status_countdown':   'Cierre en {} segundos...',
+        'status_no_results':  'No hay resultados para exportar',
+        'status_no_reportlab':'Exportación no disponible (instala reportlab)',
+        'status_pdf_exported':'PDF exportado: {}',
+        'status_export_error':'Error al exportar: {}',
+        'status_scan_error':  'Error durante escaneo: {}',
+        # Contenido del reporte PDF
+        'pdf_title':    'Reporte de Seguridad',
+        'pdf_system':   'Sistema: {}',
+        'pdf_date':     'Fecha: {}',
+        'pdf_no_vulns': 'Resultados: No se encontraron vulnerabilidades.',
+        'pdf_found':    'Resultados: Se encontraron {} problemas de seguridad:',
+        'pdf_problem':  'Problema: {}',
+        'pdf_solution': 'Solución recomendada: {}',
+        'pdf_footer':   'Generado por Vulnerability Scanner v{}',
+    },
+    # ── English ──────────────────────────────────────────────────────────────
+    'en': {
+        # Title and main buttons
+        'app_title':          'Vulnerability Scanner - v{}',
+        'btn_scan':           'Start Scan',
+        'btn_pdf':            'Export PDF',
+        'btn_save':           'Save Settings',
+        'btn_exit':           'Exit',
+        'btn_donate':         '🍺 Buy me a Beer',
+        # Checkboxes and spinbox
+        'chk_autostart':      'Auto-Start',
+        'chk_autoclose':      'Auto-Close',
+        'lbl_seconds':        'sec.',
+        # PDF folder
+        'lbl_pdf_folder':     'PDF Folder:',
+        'btn_select':         'Browse...',
+        # Language and version
+        'lbl_version':        'Version: {}',
+        'lbl_lang':           'Language:',
+        # Status bar messages
+        'status_ready':       'Ready',
+        'status_scan_start':  'Starting scan on OS: {}',
+        'status_packages':    '{} packages detected.',
+        'status_scan_done':   'Scan complete. {} issues found.',
+        'status_pdf_saved':   'PDF saved: {}',
+        'status_pdf_error':   'Error saving PDF: {}',
+        'status_config_saved':'Settings saved.',
+        'status_pdf_folder':  'PDF Folder: {}',
+        'status_countdown':   'Closing in {} seconds...',
+        'status_no_results':  'No results to export',
+        'status_no_reportlab':'Export not available (install reportlab)',
+        'status_pdf_exported':'PDF exported: {}',
+        'status_export_error':'Export error: {}',
+        'status_scan_error':  'Scan error: {}',
+        # PDF report content
+        'pdf_title':    'Security Report',
+        'pdf_system':   'System: {}',
+        'pdf_date':     'Date: {}',
+        'pdf_no_vulns': 'Results: No vulnerabilities found.',
+        'pdf_found':    'Results: {} security issues found:',
+        'pdf_problem':  'Issue: {}',
+        'pdf_solution': 'Recommended solution: {}',
+        'pdf_footer':   'Generated by Vulnerability Scanner v{}',
+    },
+}
+
+
+def get_text(lang: str, key: str, *args: Any) -> str:
+    """Retorna el texto traducido para el idioma y clave dados.
+
+    Si el idioma no existe, usa español como fallback.
+    Si la clave no existe, retorna la propia clave como texto.
+    Si se pasan argumentos posicionales, los sustituye en los {} de la cadena.
+
+    Args:
+        lang: Código de idioma ('es' o 'en').
+        key:  Clave de traducción (p.ej. 'btn_scan').
+        *args: Valores para sustituir los marcadores {} de la cadena.
+
+    Returns:
+        Cadena traducida y formateada.
+    """
+    # Obtener traducción con fallback a español y luego a la clave misma
+    text = TRANSLATIONS.get(lang, TRANSLATIONS['es']).get(key, key)
+    if args:
+        try:
+            return text.format(*args)
+        except (IndexError, KeyError):
+            return text
+    return text

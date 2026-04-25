@@ -11,7 +11,7 @@ Licencia: Apache License 2.0
 
 from datetime import datetime
 
-__version__ = "2.0.5"
+__version__ = "2.1.0"
 __author__ = "Synyster Rick"
 __license__ = "Apache License 2.0"
 __description__ = "Professional system vulnerability scanner and security analyzer"
